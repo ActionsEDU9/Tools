@@ -1,0 +1,13 @@
+name: Deploy MacOS Server
+on: 
+  workflow_dispatch:
+
+jobs:
+  Deploy:
+    runs-on: macos-latest
+    steps:
+    - name: 迁出代码
+      uses: actions/checkout@v3
+
+    - name: 设置SSH终端
+      uses: mxschmitt/action-tmate@v3
