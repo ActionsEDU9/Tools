@@ -22,7 +22,7 @@ jobs:
       - name: 加入Tailscale私有网络
         shell: cmd
         run: |
-          curl -o tailscale.msi "https://pkgs.tailscale.com/stable/tailscale-setup-1.80.2-amd64.msi"
+          curl -o tailscale.msi "https://pkgs.tailscale.com/stable/tailscale-setup-1.84.0-amd64.msi"
           msiexec /i tailscale.msi INSTALLDIR=%SystemRoot% /quiet /norestart
           tailscale up --auth-key="${{ secrets.TS_OAUTH_SECRET }}?ephemeral=true&preauthorized=true" --advertise-tags=tag:githubactions
           
@@ -54,11 +54,6 @@ jobs:
           echo "正在部署 Visual Studio Code，请稍候..."
           mkdir d:\vscode
           unzip -o vscode.zip -d d:\vscode
-          echo "正在创建 Visual Studio Code 快捷方式..."
-          schtasks /create /tn "RunMklink" /tr "cmd /c mklink \"C:\Users\AD\Desktop\Visual Studio Code.lnk\" \"D:\vscode\Code.exe\"" ^
-              /sc once /st 00:00 /ru "DOMAIN\AD" /RL HIGHEST /f
-          schtasks /run /tn "RunMklink"
-          schtasks /delete /tn "RunMklink" /f
           echo "Visual Studio Code 部署成功！"
 
       - name: 查看IP地址
