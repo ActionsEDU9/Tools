@@ -70,14 +70,6 @@ jobs:
           sudo systemctl daemon-reload
           sudo systemctl start docker
           docker info | grep "Docker Root Dir"
-          cd /mnt
-          sudo pip install uv
-          sudo uv python install 3.10
-          sudo git clone https://github.com/zyddnys/manga-image-translator.git
-          cd manga-image-translator
-          sudo uv venv --python=3.10
-          source .venv/bin/activate
-          sudo uv pip install -r requirements.txt --index-strategy unsafe-best-match
           sudo docker run \
             --name manga_image_translator_cpu \
             -p 5003:5003 \
