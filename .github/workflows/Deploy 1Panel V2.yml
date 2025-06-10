@@ -1,4 +1,4 @@
-name: Deploy 1Panel V2
+name: Deploy 1Panel
 
 on:
   workflow_dispatch:
@@ -102,7 +102,7 @@ jobs:
           CURRENT_TIME=$(date -u +"%Y-%m-%d %H:%M:%S" -d "+8 hours")
 
           MESSAGE=$(cat <<EOF
-          <b>🎯 1Panel 部署完成 🚀</b>
+          <b>🎯 1Panel ${{ github.event.inputs.panel-version }} 部署完成 🚀</b>
 
           🖥️ <b>公网 IP:</b> <code>${{ steps.check_server.outputs.public_ip }}</code>  
           🏠 <b>本地 IP:</b> <code>${{ steps.get_local_ip.outputs.local_ip }}</code>  
