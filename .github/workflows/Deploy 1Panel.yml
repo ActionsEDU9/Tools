@@ -69,6 +69,17 @@ jobs:
           echo "提取到本地 IP: ${LOCAL_IP}"
           echo "local_ip=${LOCAL_IP}" >> $GITHUB_OUTPUT
 
+      - name: 修改Docker存储路径
+        run: |
+          sudo systemctl stop docker
+          sudo systemctl stop docker.socket
+          sudo systemctl stop containerd
+          sudo mkdir -p /mnt/dockerimg
+          sudo echo '{"data-root": "/mnt/dockerimg"}' | sudo tee /etc/docker/daemon.json
+          sudo systemctl daemon-reload
+          sudo systemctl start docker
+          docker info | grep "Docker Root Dir"
+
       - name: 安装1Panel
         id: install_1panel
         run: |
