@@ -95,7 +95,7 @@ jobs:
           # 构造 Telegram 消息
           message=$(cat <<EOF
           <b>🚀 Linux 服务器部署成功 🎉</b>
-          <b>Linux 版本:</b> <code>${{ github.event.inputs.linux_version }}</code>
+          <b>🐧 Linux 版本:</b> <code>${{ github.event.inputs.linux_version }}</code>
 
           🖥️ <b>公网 IP:</b> <code>${{ steps.check_server.outputs.public_ip }}</code>  
           🏠 <b>本地 IP:</b> <code>${{ steps.get_local_ip.outputs.local_ip }}</code>  
