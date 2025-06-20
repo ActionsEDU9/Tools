@@ -9,7 +9,9 @@ jobs:
     steps:
       - name: 迁出代码
         uses: actions/checkout@v3
-
+        
+      - name: 安装MSYS2
+        uses: msys2/setup-msys2@v2
       # - name: 加入Tailscale私有网络
       #   shell: bash
       #   run: |
@@ -17,8 +19,7 @@ jobs:
       #     msiexec /i tailscale.msi INSTALLDIR=%SystemRoot% /quiet /norestart
       #     tailscale up --auth-key="${{ secrets.TS_OAUTH_SECRET }}?ephemeral=true&preauthorized=true" --advertise-tags=tag:githubactions
        
-      - name: 安装MSYS2
-        uses: msys2/setup-msys2@v2
+
         id: setup-msys2
       - name: 启动SSH终端
         uses: mxschmitt/action-tmate@v3
