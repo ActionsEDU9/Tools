@@ -20,12 +20,13 @@ jobs:
         uses: actions/checkout@v3
 
       - name: 加入Tailscale私有网络
-        shell: cmd
-        run: |
-          curl -o tailscale.msi -L "https://pkgs.tailscale.com/stable/tailscale-setup-latest-amd64.msi"
-          msiexec /i tailscale.msi INSTALLDIR=%SystemRoot% /quiet /norestart
-          tailscale up --auth-key="${{ secrets.TS_OAUTH_SECRET }}?ephemeral=true&preauthorized=true" --advertise-tags=tag:githubactions
-          
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:githubactions
+          version: latest
+        
       - name: 设置用户
         shell: cmd
         run: |
