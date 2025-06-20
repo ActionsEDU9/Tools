@@ -28,7 +28,7 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:githubactions
-          version: latest
+          version: 1.80.0
 
       - name: 启动SSH终端
         uses: mxschmitt/action-tmate@v3
