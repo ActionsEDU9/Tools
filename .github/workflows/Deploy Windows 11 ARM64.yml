@@ -17,8 +17,6 @@ jobs:
       #     msiexec /i tailscale.msi INSTALLDIR=%SystemRoot% /quiet /norestart
       #     tailscale up --auth-key="${{ secrets.TS_OAUTH_SECRET }}?ephemeral=true&preauthorized=true" --advertise-tags=tag:githubactions
        
-
-
       - name: 加入Tailscale私有网络
         uses: tailscale/github-action@v3
         with:
