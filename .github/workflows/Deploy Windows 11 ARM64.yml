@@ -19,13 +19,13 @@ jobs:
        
 
 
-      - name: 加入Tailscale私有网络
-        uses: tailscale/github-action@v3
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:githubactions
-          version: latest
+      # - name: 加入Tailscale私有网络
+      #   uses: tailscale/github-action@v3
+      #   with:
+      #     oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+      #     oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+      #     tags: tag:githubactions
+      #     version: latest
 
       - name: 安装MSYS2
         uses: msys2/setup-msys2@v2
