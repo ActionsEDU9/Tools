@@ -2,10 +2,21 @@ name: Deploy Linux Server
 
 on:
   workflow_dispatch:
+    inputs:
+      linux_version:
+        description: '部署 Linux 版本'
+        required: true
+        default: 'ubuntu-24.04'
+        type: choice
+        options:
+          - 'ubuntu-24.04'
+          - 'ubuntu-24.04-arm'
+          - 'ubuntu-22.04'   
+          - 'ubuntu-22.04-arm'
 
 jobs:
   Server:
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.inputs.linux_version }}
     steps:
       - name: 迁出代码
         uses: actions/checkout@v3
