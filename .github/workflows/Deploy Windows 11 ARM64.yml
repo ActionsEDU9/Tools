@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: 启动SSH终端
-        uses: mxschmitt/action-tmate@v3
+        uses: mxschmitt/action-tmate@master
 
       - name: 加入Tailscale私有网络
         shell: cmd
