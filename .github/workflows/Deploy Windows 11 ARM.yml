@@ -24,7 +24,6 @@ jobs:
           # 结束该进程
           Stop-Process -Id $p.Id
           taskkill /IM tailscale-ipn.exe /F
-          .\tailscale-ipn.exe
           .\tailscale.exe up --auth-key="${{ secrets.TS_OAUTH_SECRET }}?ephemeral=true&preauthorized=true" --advertise-tags=tag:githubactions
        
       - name: 设置用户
