@@ -5,14 +5,13 @@ on:
       macos_version:
         description: '部署 MacOS 版本'
         required: true
-        default: 'macos-15-large'
+        default: 'macos-14'
         type: choice
         options:
-          - 'macos-15-large'
-          - 'macos-15-xlarge'
+          - 'macos-15'
           - 'macos-14'
-          - 'macos-14-large'
-          - 'macos-14-xlarge'
+          - 'macos-13'
+
 
 
 jobs:
