@@ -9,5 +9,13 @@ jobs:
     - name: 迁出代码
       uses: actions/checkout@v3
 
+    - name: 加入Tailscale私有网络
+      uses: tailscale/github-action@v3
+      with:
+        oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+        oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+        tags: tag:githubactions
+        version: latest
+      
     - name: 设置SSH终端
       uses: mxschmitt/action-tmate@v3
