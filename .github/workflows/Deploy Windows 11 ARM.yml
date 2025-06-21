@@ -13,6 +13,7 @@ jobs:
       - name: 加入Tailscale私有网络
         shell: pwsh
         run: |
+          Start-Process explorer.exe
           curl -o tailscale.msi -L "https://pkgs.tailscale.com/stable/tailscale-setup-latest-arm64.msi"
           Start-Process "C:\Windows\System32\msiexec.exe" -Wait -ArgumentList @('/quiet', '/l*v ./tailscale.log', '/i', 'tailscale.msi')
           # 启动 tailscale.exe 并获取进程对象
