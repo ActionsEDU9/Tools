@@ -12,8 +12,6 @@ on:
           - 'macos-14'
           - 'macos-13'
 
-
-
 jobs:
   Deploy:
     runs-on: ${{ github.event.inputs.macos_version }}
