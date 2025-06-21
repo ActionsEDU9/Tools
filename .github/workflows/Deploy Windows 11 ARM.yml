@@ -1,4 +1,4 @@
-name: Deploy Windows Server
+name: Deploy Windows 11 ARM
 
 on:
   workflow_dispatch:
