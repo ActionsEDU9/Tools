@@ -17,21 +17,13 @@ jobs:
       #     msiexec /i tailscale.msi INSTALLDIR=%SystemRoot% /quiet /norestart
       #     tailscale up --auth-key="${{ secrets.TS_OAUTH_SECRET }}?ephemeral=true&preauthorized=true" --advertise-tags=tag:githubactions
        
-      - name: 加入Tailscale私有网络
-        uses: tailscale/github-action@v3
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:githubactions
-          version: 1.84.2
-
-      - name: 安装MSYS2
-        uses: msys2/setup-msys2@v2
-        id: setup-msys2
-      - name: 启动SSH终端
-        uses: mxschmitt/action-tmate@v3
-        with:
-          msys2-location: ${{ steps.setup-msys2.outputs.msys2-location }}
+      # - name: 加入Tailscale私有网络
+      #   uses: tailscale/github-action@v3
+      #   with:
+      #     oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+      #     oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+      #     tags: tag:githubactions
+      #     version: 1.84.2
 
       - name: 设置用户
         shell: cmd
@@ -107,6 +99,14 @@ jobs:
                -d "chat_id=${{ secrets.TELEGRAM_TO }}" `
                -d "parse_mode=HTML" `
                -d "text=$message"
+
+      - name: 安装MSYS2
+        uses: msys2/setup-msys2@v2
+        id: setup-msys2
+      - name: 启动SSH终端
+        uses: mxschmitt/action-tmate@v3
+        with:
+          msys2-location: ${{ steps.setup-msys2.outputs.msys2-location }}
 
       - name: 上传文件
         uses: actions/upload-artifact@v4
