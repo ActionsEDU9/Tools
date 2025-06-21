@@ -1,10 +1,23 @@
 name: Deploy MacOS Server
-on: 
+on:
   workflow_dispatch:
+    inputs:
+      macos_version:
+        description: '部署 MacOS 版本'
+        required: true
+        default: 'macos-15-large'
+        type: choice
+        options:
+          - 'macos-15-large'
+          - 'macos-15-xlarge'
+          - 'macos-14'
+          - 'macos-14-large'
+          - 'macos-14-xlarge'
+
 
 jobs:
   Deploy:
-    runs-on: macos-latest
+    runs-on: ${{ github.event.inputs.macos_version }}
     steps:
     - name: 迁出代码
       uses: actions/checkout@v3
