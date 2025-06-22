@@ -37,6 +37,8 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:githubactions
           version: latest
+          timeout: 200m
+          retry: 500
 
       - name: 查看IP地址
         shell: bash
