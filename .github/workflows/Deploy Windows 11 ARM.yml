@@ -70,7 +70,7 @@ jobs:
       - name: 安装Tailscale
         shell: pwsh
         run: |
-          choco install chocolatey -y
+          choco install tailscale -y
 
       - name: 加入Tailscale私有网络
         shell: cmd
