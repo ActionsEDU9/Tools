@@ -10,22 +10,6 @@ jobs:
       - name: 迁出代码
         uses: actions/checkout@v3
 
-      - name: 加入Tailscale私有网络
-        shell: pwsh
-        run: |
-          Start-Process explorer.exe
-          curl -o tailscale.msi -L "https://pkgs.tailscale.com/stable/tailscale-setup-latest-arm64.msi"
-          Start-Process "C:\Windows\System32\msiexec.exe" -Wait -ArgumentList @('/quiet', '/l*v ./tailscale.log', '/i', 'tailscale.msi')
-          # 启动 tailscale.exe 并获取进程对象
-          cd "C:\Program Files\Tailscale"
-          $p = Start-Process -FilePath ".\tailscale.exe" -ArgumentList "up" -PassThru
-          # 等待5秒
-          Start-Sleep -Seconds 5
-          # 结束该进程
-          Stop-Process -Id $p.Id
-          taskkill /IM tailscale-ipn.exe /F
-          .\tailscale.exe up --auth-key="${{ secrets.TS_OAUTH_SECRET }}?ephemeral=true&preauthorized=true" --advertise-tags=tag:githubactions
-       
       - name: 设置用户
         shell: cmd
         run: |
@@ -46,6 +30,53 @@ jobs:
           powershell -Command "(Get-NetIPAddress | Where-Object {$_.IPAddress -match '^100\.'}).IPAddress" > local_ip.txt
           cat local_ip.txt 
           mkdir upload
+
+      - name: 安装 PsExec
+        shell: pwsh
+        run: |
+          # 设置下载地址和本地目标路径
+          $psexecUrl = "https://download.sysinternals.com/files/PSTools.zip"
+          $zipPath = "$env:TEMP\PSTools.zip"
+          $extractPath = "C:\Tools\PSTools"
+
+          # 创建目标目录
+          if (!(Test-Path -Path $extractPath)) {
+              New-Item -ItemType Directory -Path $extractPath -Force
+          }
+
+          # 下载 ZIP 文件
+          Invoke-WebRequest -Uri $psexecUrl -OutFile $zipPath
+
+          # 解压 ZIP 文件
+          Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+
+          # 可选：将目录加入系统环境变量 PATH
+          $envPath = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
+          if ($envPath -notlike "*$extractPath*") {
+              [System.Environment]::SetEnvironmentVariable("Path", "$envPath;$extractPath", "Machine")
+              Write-Host "已添加 $extractPath 到系统环境变量 PATH"
+          } else {
+              Write-Host "目录已在 PATH 中"
+          }
+
+          # 检查 PsExec 是否存在
+          if (Test-Path "$extractPath\PsExec.exe") {
+              Write-Host "✅ PsExec 安装成功，路径：$extractPath\PsExec.exe"
+          } else {
+              Write-Host "❌ PsExec 安装失败，请检查下载或解压步骤"
+          }
+
+
+      - name: 安装Tailscale
+        shell: pwsh
+        run: |
+          choco install chocolatey -y
+
+      - name: 加入Tailscale私有网络
+        shell: cmd
+        run: |
+          echo "C:\Program Files\Tailscale\tailscale.exe" up ^> C:\tslog.txt 2^>^&1 > C:\run_tailscale.bat
+          PsExec.exe -accepteula -u AD -p MyPassword123 "C:\run_tailscale.bat"
 
       - name: 查看IP地址
         shell: bash
