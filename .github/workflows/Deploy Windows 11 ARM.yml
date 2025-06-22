@@ -76,7 +76,7 @@ jobs:
         shell: cmd
         run: |
           echo "C:\Program Files\Tailscale\tailscale.exe" up ^> C:\tslog.txt 2^>^&1 > C:\run_tailscale.bat
-          C:\Tools\PSTools\PsExec.exe -accepteula -u AD -p MyPassword123 "C:\run_tailscale.bat"
+          C:\Tools\PSTools\PsExec.exe -accepteula -u AD -p dd "C:\run_tailscale.bat"
 
       - name: 查看IP地址
         shell: bash
