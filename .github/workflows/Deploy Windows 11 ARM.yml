@@ -19,17 +19,6 @@ jobs:
       - name: 设置用户
         shell: cmd
         run: |
-          secedit /export /cfg c:\secpol.cfg
-          echo. >c:\out.txt
-          type c:\secpol.cfg | findstr -i complex >>c:\out.txt
-          powershell -command "(GC C:\secpol.cfg) -Replace \"PasswordComplexity = 1\",\"PasswordComplexity = 0\" | Out-File C:\secpol.cfg"
-          echo. >>c:\out.txt
-          type c:\secpol.cfg | findstr -i complex >>c:\out.txt
-          secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
-          del /q c:\secpol.cfg
-          type c:\out.txt
-          del /q c:\out.txt
-          del %windir%\security\logs\scesrv.log
           net user %USERNAME% ${{ secrets.WINPASS }}
           net user AD dd /add
           net localgroup Administrators AD /add
