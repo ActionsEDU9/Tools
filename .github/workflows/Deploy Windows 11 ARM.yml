@@ -26,8 +26,8 @@ jobs:
           cat local_ip.txt 
           powershell -Command "Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False"
 
-      - name: 格式化 Disk0
-        shell: powershell
+      - name: 格式化磁盘
+        shell: pwsh
         run: |
           # 获取 Disk 0
           $disk = Get-Disk -Number 0
