@@ -1,11 +1,11 @@
-name: Deploy Windows 11 ARM
+name: Deploy Windows Server
 
 on:
   workflow_dispatch:
 
 jobs:
   Server:
-    runs-on: windows-11-arm
+    runs-on: windows-${{ github.event.inputs.windows_server_version }}
     steps:
       - name: 迁出代码
         uses: actions/checkout@v3
@@ -36,7 +36,8 @@ jobs:
           powershell -Command "(Get-NetIPAddress | Where-Object {$_.IPAddress -match '^192\.'}).IPAddress" > local_ip.txt
           cat local_ip.txt 
           mkdir upload
-          
+          powershell -Command "Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False"
+
       - name: 查看IP地址
         shell: bash
         id: get_local_ip
