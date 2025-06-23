@@ -41,6 +41,9 @@ jobs:
       - name: 初始化并格式化Disk 0 为 NTFS
         shell: powershell
         run: |
+          # 设置输出编码为 UTF-8
+          $OutputEncoding = [System.Text.UTF8Encoding]::new()
+          
           # 获取Disk 0
           $disk = Get-Disk -Number 0
 
