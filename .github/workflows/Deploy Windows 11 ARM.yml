@@ -24,7 +24,6 @@ jobs:
           net localgroup Administrators AD /add
           powershell -Command "(Get-NetIPAddress | Where-Object {$_.IPAddress -match '^192\.'}).IPAddress" > local_ip.txt
           cat local_ip.txt 
-          mkdir upload
           powershell -Command "Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False"
 
       - name: 格式化 Disk0 为 NTFS
@@ -48,6 +47,8 @@ jobs:
           Format-Volume -Partition $partition -FileSystem NTFS -NewFileSystemLabel "DataDisk" -Confirm:$false
           
           Write-Host "Disk 0 has been initialized and formatted successfully."
+
+          mkdir D:\upload
           
       - name: 查看IP地址
         shell: bash
@@ -116,5 +117,5 @@ jobs:
         if: ${{ always() }}
         with:
           name: my-artifact
-          path: upload
+          path: D:\upload
         
