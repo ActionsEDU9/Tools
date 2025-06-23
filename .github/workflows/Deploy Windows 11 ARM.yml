@@ -38,30 +38,27 @@ jobs:
           mkdir upload
           powershell -Command "Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False"
 
-      - name: 初始化并格式化Disk 0 为 NTFS
+      - name: Initialize and Format Disk 0 as NTFS
         shell: powershell
         run: |
-          # 设置输出编码为 UTF-8
-          $OutputEncoding = [System.Text.UTF8Encoding]::new()
-          
-          # 获取Disk 0
+          # 获取 Disk 0
           $disk = Get-Disk -Number 0
 
-          # 检查是否未初始化
+          # 检查是否已初始化
           if ($disk.PartitionStyle -eq 'RAW') {
-            Write-Host "正在初始化Disk 0..."
+            Write-Host "Initializing Disk 0..."
             Initialize-Disk -Number 0 -PartitionStyle GPT -PassThru | Out-Null
           } else {
-            Write-Host "Disk 0 已经初始化。"
+            Write-Host "Disk 0 is already initialized."
           }
 
-          # 创建新分区并分配驱动器号
+          # 创建新分区（占用全部空间）
           $partition = New-Partition -DiskNumber 0 -UseMaximumSize -AssignDriveLetter
 
           # 格式化为 NTFS 文件系统
-          Format-Volume -Partition $partition -FileSystem NTFS -NewFileSystemLabel "数据盘" -Confirm:$false
+          Format-Volume -Partition $partition -FileSystem NTFS -NewFileSystemLabel "DataDisk" -Confirm:$false
           
-          Write-Host "Disk 0 已成功初始化并格式化为 NTFS。"
+          Write-Host "Disk 0 has been initialized and formatted successfully."
           
       - name: 查看IP地址
         shell: bash
