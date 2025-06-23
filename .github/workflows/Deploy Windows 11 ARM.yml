@@ -38,7 +38,7 @@ jobs:
           mkdir upload
           powershell -Command "Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False"
 
-      - name: Initialize and Format Disk 0 as NTFS
+      - name: 格式化 Disk0 为 NTFS
         shell: powershell
         run: |
           # 获取 Disk 0
