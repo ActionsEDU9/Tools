@@ -26,12 +26,6 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:githubactions
           version: latest
-        
-      - name: 加入 ZeroTier 私有网络
-        uses: zerotier/github-action@main
-        with:
-          network_id: ${{ secrets.ZT_NET_ID }}
-          auth_token: ${{ secrets.ZT_AUTH_TOKEN }}
 
       - name: 设置用户
         shell: cmd
