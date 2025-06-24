@@ -24,7 +24,7 @@ jobs:
           net user %USERNAME% ${{ secrets.WINPASS }}
           net user AD dd /add
           net localgroup Administrators AD /add
-          powershell -Command "(Get-NetIPAddress | Where-Object {$_.IPAddress -match '^192\.168\.191\.'}).IPAddress" > local_ip.txt
+          powershell -Command "(Get-NetIPAddress | Where-Object {$_.IPAddress -match '^100\.'}).IPAddress" > local_ip.txt
           cat local_ip.txt 
           powershell -Command "Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False"
 
