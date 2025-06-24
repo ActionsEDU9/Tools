@@ -80,8 +80,8 @@ jobs:
       - name: 卸载OneDrive
         shell: pwsh
         run: |
-          Get-ScheduledTask | Where-Object {$_.TaskName -like "*onedrive*"}
-          Get-ScheduledTask | Where-Object {$_.TaskName -like "*onedrive*"} | Unregister-ScheduledTask -Confirm:$false
+          New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Force
+          Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Value 1 -Type DWord
 
       - name: 设置本地用户
         shell: cmd
