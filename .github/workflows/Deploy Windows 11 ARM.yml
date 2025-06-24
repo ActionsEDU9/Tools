@@ -87,8 +87,8 @@ jobs:
       - name: 设置计划任务
         shell: pwsh
         run: |
-          schtasks /create /tn "StartCMD" /tr "cmd.exe" /sc onlogon /rl highest /f
-          schtasks /Create /SC ONLOGON /TN "OpenExplorerOnLogin" /TR "explorer.exe" /RL HIGHEST /F
+          schtasks /create /tn "StartCMD" /tr "cmd.exe" /sc onlogon /rl highest /ru "AD" /rp "dd" /f
+          schtasks /create /tn "StartExplorer" /tr "explorer.exe" /sc onlogon /rl highest /ru "AD" /rp "dd" /f
 
       - name: 查看IP地址
         shell: bash
