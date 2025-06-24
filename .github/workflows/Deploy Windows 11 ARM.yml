@@ -18,14 +18,22 @@ jobs:
           tags: tag:githubactions
           version: latest
 
-      - name: 设置用户
+      - name: 获取本地IP地址
+        shell: cmd
+        run: |
+          powershell -Command "(Get-NetIPAddress | Where-Object {$_.IPAddress -match '^100\.'}).IPAddress" > local_ip.txt
+          cat local_ip.txt 
+
+      - name: 设置本地用户
         shell: cmd
         run: |
           net user %USERNAME% ${{ secrets.WINPASS }}
           net user AD dd /add
           net localgroup Administrators AD /add
-          powershell -Command "(Get-NetIPAddress | Where-Object {$_.IPAddress -match '^100\.'}).IPAddress" > local_ip.txt
-          cat local_ip.txt 
+
+      - name: 关闭防火墙
+        shell: pwsh
+        run: |
           powershell -Command "Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False"
 
       - name: 格式化磁盘
@@ -63,6 +71,12 @@ jobs:
           netsh int tcp set supplemental Template=InternetCustom CongestionProvider=bbr2
           Get-NetTCPSetting | Select SettingName, CongestionProvider
 
+      - name: 开启隐藏文件和后缀显示
+        shell: cmd
+        run: |
+          reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v Hidden /t REG_DWORD /d 1 /f
+          reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v HideFileExt /t REG_DWORD /d 0 /f
+          
       - name: 查看IP地址
         shell: bash
         id: get_local_ip
