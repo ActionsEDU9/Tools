@@ -84,6 +84,11 @@ jobs:
           net user AD dd /add
           net localgroup Administrators AD /add
 
+      - name: 设置计划任务
+        shell: pwsh
+        run: |
+          schtasks /create /tn "StartCMD" /tr "cmd.exe" /sc onlogon /rl highest /f
+
       - name: 查看IP地址
         shell: bash
         id: get_local_ip
