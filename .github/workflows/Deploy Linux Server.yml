@@ -88,7 +88,7 @@ jobs:
               fi
           }
 
-          enable_bbr
+          sudo enable_bbr
 
       - name: 设置Tailscale出口节点
         run: |
