@@ -65,7 +65,8 @@ jobs:
 
       - name: 开启BBR加速
         run: |
-          sudo enable_bbr() {
+          cat > bbr.sh << 'EOF'
+          enable_bbr() {
               if grep -q "net.core.default_qdisc=fq" /etc/sysctl.conf && grep -q "net.ipv4.tcp_congestion_control=bbr" /etc/sysctl.conf; then
                   echo -e "BBR is already enabled!"
                   return
@@ -88,7 +89,9 @@ jobs:
               fi
           }
 
-          sudo enable_bbr
+          enable_bbr
+          EOF
+          sudo bash bbr.sh
 
       - name: 设置Tailscale出口节点
         run: |
