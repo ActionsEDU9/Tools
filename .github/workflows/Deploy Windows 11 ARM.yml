@@ -80,6 +80,8 @@ jobs:
       - name: 卸载OneDrive
         shell: pwsh
         run: |
+          Takeown /f "C:\Windows\SysWOW64\OneDriveSetup.exe"
+          icacls "C:\Windows\SysWOW64\OneDriveSetup.exe" /grant administrators:F
           Remove-Item -Path "C:\Windows\SysWOW64\OneDriveSetup.exe" -Force
 
       - name: 设置本地用户
