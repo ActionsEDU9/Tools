@@ -24,13 +24,6 @@ jobs:
           powershell -Command "(Get-NetIPAddress | Where-Object {$_.IPAddress -match '^100\.'}).IPAddress" > local_ip.txt
           cat local_ip.txt 
 
-      - name: 设置本地用户
-        shell: cmd
-        run: |
-          net user %USERNAME% ${{ secrets.WINPASS }}
-          net user AD dd /add
-          net localgroup Administrators AD /add
-
       - name: 关闭防火墙
         shell: pwsh
         run: |
@@ -74,33 +67,21 @@ jobs:
       - name: 开启隐藏文件和后缀显示
         shell: pwsh
         run: |
-          # 获取所有用户目录（排除默认系统账户）
-          $users = Get-ChildItem 'C:\Users' | Where-Object {
-              ($_.Name -ne 'Default') -and 
-              ($_.Name -ne 'Default User') -and 
-              ($_.Name -ne 'Public') -and 
-              ($_.Name -ne 'All Users')
-          }
+          reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v Hidden /t REG_DWORD /d 1 /f
+          reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v HideFileExt /t REG_DWORD /d 0 /f
+          taskkill /f /im explorer.exe && start explorer.exe
+          reg load HKU\DefaultUser "C:\Users\Default\NTUSER.DAT"
+          reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v Hidden /t REG_DWORD /d 1 /f
+          reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v HideFileExt /t REG_DWORD /d 0 /f
+          reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v ShowSuperHidden /t REG_DWORD /d 1 /f
+          reg unload HKU\DefaultUser
 
-          foreach ($user in $users) {
-              $ntuserPath = "C:\Users\$($user.Name)\NTUSER.DAT"
-              if (Test-Path $ntuserPath) {
-                  $hiveName = "TempHive_$($user.Name)"
-                  
-                  # 加载注册表配置
-                  reg load "HKU\$hiveName" $ntuserPath
-
-                  # 修改相关键值
-                  reg add "HKU\$hiveName\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v Hidden /t REG_DWORD /d 1 /f
-                  reg add "HKU\$hiveName\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v HideFileExt /t REG_DWORD /d 0 /f
-                  reg add "HKU\$hiveName\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v ShowSuperHidden /t REG_DWORD /d 1 /f
-
-                  # 卸载注册表配置
-                  reg unload "HKU\$hiveName"
-              }
-          }
-
-
+      - name: 设置本地用户
+        shell: cmd
+        run: |
+          net user %USERNAME% ${{ secrets.WINPASS }}
+          net user AD dd /add
+          net localgroup Administrators AD /add
 
       - name: 查看IP地址
         shell: bash
