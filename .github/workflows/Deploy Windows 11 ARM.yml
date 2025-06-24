@@ -19,7 +19,7 @@ jobs:
           version: latest
 
       - name: 获取本地IP地址
-        shell: cmd
+        shell: pwsh
         run: |
           (Get-NetIPAddress | Where-Object {$_.IPAddress -match '^100\.'}).IPAddress > local_ip.txt
           cat local_ip.txt 
