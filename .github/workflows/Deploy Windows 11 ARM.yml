@@ -78,9 +78,10 @@ jobs:
           reg unload HKU\DefaultUser
 
       - name: 卸载OneDrive
-        shell: cmd
+        shell: pwsh
         run: |
-          C:\Users\AD\AppData\Local\Microsoft\OneDrive\OneDriveSetup.exe /uninstall
+          Get-ScheduledTask | Where-Object {$_.TaskName -like "*onedrive*"}
+          Get-ScheduledTask | Where-Object {$_.TaskName -like "*onedrive*"} | Unregister-ScheduledTask -Confirm:$false
 
       - name: 设置本地用户
         shell: cmd
