@@ -78,7 +78,7 @@ jobs:
           reg unload HKU\DefaultUser
 
       - name: 卸载OneDrive
-        shell: pwsh
+        shell: cmd
         run: |
           %SystemRoot%\SysWOW64\OneDriveSetup.exe /uninstall
 
