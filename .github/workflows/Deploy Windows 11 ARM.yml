@@ -80,9 +80,8 @@ jobs:
       - name: 卸载OneDrive
         shell: pwsh
         run: |
-          New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Force
-          Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Value 1 -Type DWord
-          reg add "HKLM\SOFTWARE\Policies\Microsoft\OneDrive" /v "DisableAutoUpdate" /t REG_DWORD /d 1 /f
+          Remove-Item -Path "C:\Windows\SysWOW64\OneDriveSetup.exe" -Force
+
       - name: 设置本地用户
         shell: cmd
         run: |
