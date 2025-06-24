@@ -77,6 +77,11 @@ jobs:
           reg add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v LaunchTo /t REG_DWORD /d 2 /f
           reg unload HKU\DefaultUser
 
+      - name: 卸载OneDrive
+        shell: pwsh
+        run: |
+          %SystemRoot%\SysWOW64\OneDriveSetup.exe /uninstall
+
       - name: 设置本地用户
         shell: cmd
         run: |
