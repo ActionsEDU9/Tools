@@ -63,6 +63,33 @@ jobs:
           tags: tag:githubactions
           version: latest
 
+      - name: 开启BBR加速
+        run: |
+          enable_bbr() {
+              if grep -q "net.core.default_qdisc=fq" /etc/sysctl.conf && grep -q "net.ipv4.tcp_congestion_control=bbr" /etc/sysctl.conf; then
+                  echo -e "BBR is already enabled!"
+                  return
+              fi
+
+              apt-get update && apt-get install -yqq --no-install-recommends ca-certificates
+
+              # Enable BBR
+              echo "net.core.default_qdisc=fq" | tee -a /etc/sysctl.conf
+              echo "net.ipv4.tcp_congestion_control=bbr" | tee -a /etc/sysctl.conf
+
+              # Apply changes
+              sysctl -p
+
+              # Verify that BBR is enabled
+              if [[ $(sysctl net.ipv4.tcp_congestion_control | awk '{print $3}') == "bbr" ]]; then
+                  echo -e "BBR has been enabled successfully."
+              else
+                  echo -e "${red}Failed to enable BBR. Please check your system configuration."
+              fi
+          }
+
+          enable_bbr
+
       - name: 设置Tailscale出口节点
         run: |
           echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
