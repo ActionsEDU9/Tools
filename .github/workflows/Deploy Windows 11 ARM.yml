@@ -21,7 +21,7 @@ jobs:
       - name: 获取本地IP地址
         shell: cmd
         run: |
-          powershell -Command "(Get-NetIPAddress | Where-Object {$_.IPAddress -match '^100\.'}).IPAddress" > local_ip.txt
+          (Get-NetIPAddress | Where-Object {$_.IPAddress -match '^100\.'}).IPAddress > local_ip.txt
           cat local_ip.txt 
 
       - name: 关闭防火墙
