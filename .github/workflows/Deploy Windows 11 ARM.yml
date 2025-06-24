@@ -74,15 +74,32 @@ jobs:
       - name: 开启隐藏文件和后缀显示
         shell: pwsh
         run: |
-          $users = Get-ChildItem 'C:\Users' -Force | Where-Object { $_.PSIsContainer -and $_.Name -notin @('All Users', 'Default', 'Default User', 'Public') }
+          # 获取所有用户目录（排除默认系统账户）
+          $users = Get-ChildItem 'C:\Users' | Where-Object {
+              ($_.Name -ne 'Default') -and 
+              ($_.Name -ne 'Default User') -and 
+              ($_.Name -ne 'Public') -and 
+              ($_.Name -ne 'All Users')
+          }
 
           foreach ($user in $users) {
-              $ntuser = "C:\Users\$($user.Name)\NTUSER.DAT"
-              reg load HKU\TempHive "$ntuser"
-              reg add "HKU\TempHive\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v Hidden /t REG_DWORD /d 1 /f
-              reg add "HKU\TempHive\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v HideFileExt /t REG_DWORD /d 0 /f
-              reg unload HKU\TempHive
+              $ntuserPath = "C:\Users\$($user.Name)\NTUSER.DAT"
+              if (Test-Path $ntuserPath) {
+                  $hiveName = "TempHive_$($user.Name)"
+                  
+                  # 加载注册表配置
+                  reg load "HKU\$hiveName" $ntuserPath
+
+                  # 修改相关键值
+                  reg add "HKU\$hiveName\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v Hidden /t REG_DWORD /d 1 /f
+                  reg add "HKU\$hiveName\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v HideFileExt /t REG_DWORD /d 0 /f
+                  reg add "HKU\$hiveName\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v ShowSuperHidden /t REG_DWORD /d 1 /f
+
+                  # 卸载注册表配置
+                  reg unload "HKU\$hiveName"
+              }
           }
+
 
 
       - name: 查看IP地址
