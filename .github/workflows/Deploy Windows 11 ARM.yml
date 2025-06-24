@@ -78,9 +78,9 @@ jobs:
           reg unload HKU\DefaultUser
 
       - name: 卸载OneDrive
-        shell: pwsh
+        shell: cmd
         run: |
-          Get-AppxPackage *OneDrive* | Remove-AppxPackage
+          C:\Users\AD\AppData\Local\Microsoft\OneDrive\OneDriveSetup.exe /uninstall
 
       - name: 设置本地用户
         shell: cmd
