@@ -82,7 +82,7 @@ jobs:
         run: |
           New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Force
           Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Value 1 -Type DWord
-
+          reg add "HKLM\SOFTWARE\Policies\Microsoft\OneDrive" /v "DisableAutoUpdate" /t REG_DWORD /d 1 /f
       - name: 设置本地用户
         shell: cmd
         run: |
