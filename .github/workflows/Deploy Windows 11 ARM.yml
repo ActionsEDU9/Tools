@@ -34,7 +34,7 @@ jobs:
       - name: 关闭防火墙
         shell: pwsh
         run: |
-          powershell -Command "Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False"
+          Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 
       - name: 格式化磁盘
         shell: pwsh
