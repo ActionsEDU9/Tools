@@ -60,7 +60,7 @@ jobs:
 
           mkdir D:\upload
         
-      - name: 开启BBRv2
+      - name: 开启BBR
         shell: pwsh
         run: |
           Get-NetTCPSetting | Select SettingName, CongestionProvider
@@ -76,7 +76,7 @@ jobs:
         run: |
           reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v Hidden /t REG_DWORD /d 1 /f
           reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v HideFileExt /t REG_DWORD /d 0 /f
-          
+
       - name: 查看IP地址
         shell: bash
         id: get_local_ip
