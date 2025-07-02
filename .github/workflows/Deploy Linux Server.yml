@@ -57,8 +57,8 @@ jobs:
 
       - name: 开启IPv6
         run: |
-          wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh 
-          sudo bash menu.sh 6
+          wget -N https://gitlab.com/fscarmen/warp/-/raw/main/warp-go.sh
+          sudo bash warp-go.sh 6
 
       - name: 加入Tailscale私有网络
         uses: tailscale/github-action@v3
