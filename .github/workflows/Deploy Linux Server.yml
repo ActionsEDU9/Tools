@@ -55,6 +55,10 @@ jobs:
           echo "postal=$(cat raw_net_info | jq -r '.postal')" >> $GITHUB_OUTPUT
           echo "timezone=$(cat raw_net_info | jq -r '.timezone')" >> $GITHUB_OUTPUT
 
+      - name: 开启IPv6
+        run: |
+          wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh && bash menu.sh 6 a p
+
       - name: 加入Tailscale私有网络
         uses: tailscale/github-action@v3
         with:
