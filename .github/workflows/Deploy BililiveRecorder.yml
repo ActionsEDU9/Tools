@@ -96,6 +96,10 @@ jobs:
             
       - name: 部署 BililiveRecorder
         run: |
+          cat > $(pwd)/upload/config.json << 'EOF'
+          {"version":3,"global":{"CuttingMode":{"HasValue":true,"Value":2},"CuttingNumber":{"HasValue":true,"Value":2000},"CuttingByTitle":{"HasValue":true,"Value":true},"RecordDanmaku":{"HasValue":true,"Value":true},"RecordDanmakuRaw":{"HasValue":true,"Value":true},"RecordDanmakuGift":{"HasValue":true,"Value":true},"SaveStreamCover":{"HasValue":true,"Value":true},"FileNameRecordTemplate":{"HasValue":true,"Value":"录制-{{ name }}-{{ \"now\" | time_zone: \"Asia/Shanghai\" | format_date: \"yyyyMMdd-HHmmss-fff\" }}-{{ title }}.flv"},"FlvProcessorSplitOnScriptTag":{"HasValue":true,"Value":true}},"rooms":[{"RoomId":{"HasValue":true,"Value":23141761},"AutoRecord":{"HasValue":true,"Value":true}}]}
+          EOF
+
           cat > docker-compose.yml << 'EOF'
           version: "3.8"
           services:
@@ -122,8 +126,6 @@ jobs:
                     
           EOF
           docker compose up -d
-
-
 
       - name: 发送 Telegram 通知
         run: |
