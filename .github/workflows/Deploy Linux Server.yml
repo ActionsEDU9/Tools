@@ -83,11 +83,11 @@ jobs:
           grep -qE '^[ ]*precedence[ ]*::ffff:0:0/96[ ]*100' /etc/gai.conf || echo 'precedence ::ffff:0:0/96  100' | sudo tee -a /etc/gai.conf
           
           echo "IPv6 地址信息："
-          curl -6 ip.p3terx.com
+          curl -6 ip.p3terx.com -s
           echo "IPv4 地址信息："
-          curl -4 ip.p3terx.com
+          curl -4 ip.p3terx.com -s
           echo "IPv4/IPv6 优先级："
-          curl ip.p3terx.com
+          curl ip.p3terx.com -s
 
       - name: 加入Tailscale私有网络
         uses: tailscale/github-action@v3
