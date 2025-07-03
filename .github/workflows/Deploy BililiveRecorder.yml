@@ -44,6 +44,35 @@ jobs:
           echo "postal=$(cat raw_net_info | jq -r '.postal')" >> $GITHUB_OUTPUT
           echo "timezone=$(cat raw_net_info | jq -r '.timezone')" >> $GITHUB_OUTPUT
 
+
+      - name: 开启IPv6
+        run: |
+          sudo apt install wireguard
+
+          cat > wg-profile.conf << 'EOF'
+          [Interface]
+          PrivateKey = wDeauuJjBtINdbWlUHd/a1jWiR4VjBQ024juxxPP80s=
+          Address = 2606:4700:110:8863:1d6a:4629:7529:893a/128
+          DNS = 2001:4860:4860::8888,2001:4860:4860::8844
+          MTU = 1280
+          [Peer]
+          PublicKey = bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+          AllowedIPs = ::/0
+          Endpoint = 162.159.192.1:2408
+          EOF
+
+          sudo cp wg-profile.conf /etc/wireguard/wgcf.conf
+          sudo wg-quick up wgcf
+
+          grep -qE '^[ ]*precedence[ ]*::ffff:0:0/96[ ]*100' /etc/gai.conf || echo 'precedence ::ffff:0:0/96  100' | sudo tee -a /etc/gai.conf
+          
+          echo "IPv6 地址信息："
+          curl -6 ip.p3terx.com -s
+          echo "IPv4 地址信息："
+          curl -4 ip.p3terx.com -s
+          echo "IPv4/IPv6 优先级："
+          curl ip.p3terx.com -s
+
       - name: 加入Tailscale私有网络
         uses: tailscale/github-action@v3
         with:
