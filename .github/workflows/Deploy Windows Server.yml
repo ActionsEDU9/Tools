@@ -58,9 +58,13 @@ jobs:
           net user %USERNAME% ${{ secrets.WINPASS }}
           net user AD dd /add
           net localgroup Administrators AD /add
-          powershell -Command "(Get-NetIPAddress | Where-Object {$_.IPAddress -match '^100\.'}).IPAddress" > local_ip.txt
-          cat local_ip.txt 
           mkdir upload
+
+      - name: 获取本地IP地址
+        shell: pwsh
+        run: |
+          (Get-NetIPAddress | Where-Object {$_.IPAddress -match '^100\.'}).IPAddress > local_ip.txt
+          cat local_ip.txt 
 
       - name: 查看IP地址
         shell: bash
