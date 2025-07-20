@@ -29,10 +29,14 @@ jobs:
           version: latest
 
       - name: 自动管理所有驱动器的分页文件大小
-        shell: cmd
+        shell: pwsh
         run: |
-          wmic computersystem where name="%computername%" set AutomaticManagedPagefile=True
+          # 获取计算机系统对象
+          $ComputerSystem = Get-CimInstance -ClassName Win32_ComputerSystem -Filter "Name='$env:COMPUTERNAME'"
 
+          # 设置为自动管理并应用
+          $ComputerSystem.AutomaticManagedPagefile = $true
+          Set-CimInstance -InputObject $ComputerSystem
       - name: 开启隐藏文件和后缀显示
         shell: pwsh
         run: |
