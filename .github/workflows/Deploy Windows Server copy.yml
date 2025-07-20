@@ -1,4 +1,4 @@
-name: Deploy Windows Server
+name: Deploy Windows Server Test
 
 on:
   workflow_dispatch:
