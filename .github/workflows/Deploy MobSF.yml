@@ -76,8 +76,6 @@ jobs:
         run: |
           git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
           cd Mobile-Security-Framework-MobSF
-          scripts/start_avd.sh 
-          
           docker pull opensecurity/mobile-security-framework-mobsf:latest
           docker run -itd --rm -p 80:8000 opensecurity/mobile-security-framework-mobsf:latest
 
