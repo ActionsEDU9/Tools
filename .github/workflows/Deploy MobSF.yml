@@ -91,6 +91,7 @@ jobs:
         run: |
           sudo apt update -y
           sudo apt install -y socat
+          rm -rf "$HOME/.android"
           mkdir -p "$HOME/Android"
           ln -s /usr/local/lib/android/sdk "$HOME/Android/Sdk"
           ln -s "$HOME/.config/.android/" "$HOME/"
