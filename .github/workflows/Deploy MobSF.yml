@@ -97,7 +97,7 @@ jobs:
           ln -s "$HOME/.config/.android/" "$HOME/"
           wget https://github.com/MobSF/Mobile-Security-Framework-MobSF/raw/refs/heads/master/scripts/start_avd.sh
           sed -i.bak '/# Kill any existing emulator processes/,/Starting AVD.*on port/d' start_avd.sh
-          # bash start_avd.sh mobsfemu 5554
+          bash start_avd.sh mobsfemu 5554
 
       - name: 部署 MobSF
         run: |
