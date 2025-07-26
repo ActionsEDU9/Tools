@@ -83,7 +83,7 @@ jobs:
         run: |
           git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
           cd Mobile-Security-Framework-MobSF
-          script/start_avd.sh
+          ./script/start_avd.sh
           docker pull opensecurity/mobile-security-framework-mobsf:latest
           docker run -itd --rm -p 80:8000 -e "MOBSF_ANALYZER_IDENTIFIER=emulator-5554" opensecurity/mobile-security-framework-mobsf:latest
 
