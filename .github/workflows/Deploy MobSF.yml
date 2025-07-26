@@ -86,7 +86,7 @@ jobs:
           printf 'disk.dataPartition.size=6144M\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
           printf 'disk.cachePartition.size=256M\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
 
-          ANDROID_AVD_HOME=/home/runner/.config/.android/avd /usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd mobsfemu -gpu swiftshader_indirect -writable-system -no-window -no-snapshot -wipe-data  &
+          # ANDROID_AVD_HOME=/home/runner/.config/.android/avd /usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd mobsfemu -gpu swiftshader_indirect -writable-system -no-window -no-snapshot -wipe-data  &
 
       - name: 配置 Android Emulator
         run: |
@@ -95,7 +95,7 @@ jobs:
           ln -s /usr/local/lib/android/sdk "$HOME/Android/Sdk"
           ln -s "$HOME/.config/.android/" "$HOME/"
           wget https://github.com/MobSF/Mobile-Security-Framework-MobSF/raw/refs/heads/master/scripts/start_avd.sh
-          sed -i.bak '/# Kill any existing emulator processes/,/Starting AVD.*on port/d' start_avd.sh
+          # sed -i.bak '/# Kill any existing emulator processes/,/Starting AVD.*on port/d' start_avd.sh
           bash start_avd.sh mobsfemu 5554
 
       - name: 部署 MobSF
