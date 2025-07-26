@@ -97,13 +97,13 @@ jobs:
           ln -s "$HOME/.config/.android/" "$HOME/"
           wget https://github.com/MobSF/Mobile-Security-Framework-MobSF/raw/refs/heads/master/scripts/start_avd.sh
           sed -i.bak '/# Kill any existing emulator processes/,/Starting AVD.*on port/d' start_avd.sh
-          bash start_avd.sh mobsfemu 5554
+          # bash start_avd.sh mobsfemu 5554
 
-      - name: 部署 MobSF
-        run: |
-          /usr/local/lib/android/sdk/platform-tools/adb devices
-          docker pull opensecurity/mobile-security-framework-mobsf:latest
-          docker run -itd --rm -p 80:8000 -e "MOBSF_ANALYZER_IDENTIFIER=172.17.0.1:5556" opensecurity/mobile-security-framework-mobsf:latest
+      # - name: 部署 MobSF
+      #   run: |
+      #     /usr/local/lib/android/sdk/platform-tools/adb devices
+      #     docker pull opensecurity/mobile-security-framework-mobsf:latest
+      #     docker run -itd --rm -p 80:8000 -e "MOBSF_ANALYZER_IDENTIFIER=172.17.0.1:5556" opensecurity/mobile-security-framework-mobsf:latest
 
 
       - name: 发送 Telegram 通知
