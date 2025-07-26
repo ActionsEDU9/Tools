@@ -74,9 +74,9 @@ jobs:
           ram-size: 8096M
           script: echo "Hello, Android Emulator!"
 
-      - name: 启动 Android Emulator
-        run: |
-          /usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd test -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim &
+      # - name: 启动 Android Emulator
+      #   run: |
+      #     /usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd test -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim &
 
       - name: 配置 Android Emulator
         run: |
