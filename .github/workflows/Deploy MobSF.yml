@@ -83,9 +83,8 @@ jobs:
           mkdir -p "$HOME/Android"
           ln -s /usr/local/lib/android/sdk "$HOME/Android/Sdk"
           wget https://github.com/MobSF/Mobile-Security-Framework-MobSF/raw/refs/heads/master/scripts/start_avd.sh
-          bash start_avd.sh
-          bash start_avd.sh emulator-5554
-          
+          bash start_avd.sh test
+
       - name: 部署 MobSF
         run: |
           /usr/local/lib/android/sdk/platform-tools/adb devices
