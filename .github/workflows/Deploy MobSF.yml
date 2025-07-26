@@ -63,7 +63,7 @@ jobs:
       - name: 部署 MobSF
         run: |
           docker pull opensecurity/mobile-security-framework-mobsf:latest
-          docker run -itd --rm -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+          docker run -itd --rm -p 80:8000 opensecurity/mobile-security-framework-mobsf:latest
 
       - name: 发送 Telegram 通知
         run: |
@@ -83,7 +83,7 @@ jobs:
           📮 <b>邮政编码:</b> <code>${{ steps.check_server.outputs.postal }}</code>  
           ⏰ <b>时区:</b> <code>${{ steps.check_server.outputs.timezone }}</code>  
 
-          🔗 <b>MobSF 访问地址:</b> <code>http://${{ steps.get_local_ip.outputs.local_ip }}:8000</code>  
+          🔗 <b>MobSF 访问地址:</b> <code>http://${{ steps.get_local_ip.outputs.local_ip }}</code>  
           👤 <b>用户名:</b> <code>mobsf</code>  
           🔑 <b>密码:</b> <code>mobsf</code>  
           
