@@ -83,14 +83,13 @@ jobs:
           mkdir -p "$HOME/Android"
           ln -s /usr/local/lib/android/sdk "$HOME/Android/Sdk"
           wget https://github.com/MobSF/Mobile-Security-Framework-MobSF/raw/refs/heads/master/scripts/start_avd.sh
-          sed -i 's#"$EMULATOR_PATH" -avd "$AVD_NAME" -writable-system -no-snapshot -wipe-data -port "$START_PORT" >/dev/null 2>&1 &#"$EMULATOR_PATH" -avd "$AVD_NAME" -port "$START_PORT" -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim >/dev/null 2>&1 \&#' start_avd.sh
-          bash start_avd.sh test 5554
+          # bash start_avd.sh test 5554
 
-      - name: 部署 MobSF
-        run: |
-          /usr/local/lib/android/sdk/platform-tools/adb devices
-          docker pull opensecurity/mobile-security-framework-mobsf:latest
-          docker run -itd --rm -p 80:8000 -e "MOBSF_ANALYZER_IDENTIFIER=emulator-5554" opensecurity/mobile-security-framework-mobsf:latest
+      # - name: 部署 MobSF
+      #   run: |
+      #     /usr/local/lib/android/sdk/platform-tools/adb devices
+      #     docker pull opensecurity/mobile-security-framework-mobsf:latest
+      #     docker run -itd --rm -p 80:8000 -e "MOBSF_ANALYZER_IDENTIFIER=emulator-5554" opensecurity/mobile-security-framework-mobsf:latest
 
       - name: 发送 Telegram 通知
         run: |
