@@ -67,29 +67,43 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: 创建 Android Emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          cores: 4
-          ram-size: 8096M
-          script: echo "Hello, Android Emulator!"
+        run: |
+          \yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+          /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --install 'build-tools;35.0.0' platform-tools 'platforms;android-29'
+          /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --install emulator --channel=0
+          /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --install 'system-images;android-29;default;x86_64' --channel=0
+          \echo no | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/avdmanager create avd --force -n mobsfemu --abi 'default/x86_64' --package 'system-images;android-29;default;x86_64'
+          printf 'hw.ramSize=8096M\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
+          printf 'vm.heapSize=512M\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
+          printf 'hw.cpu.ncore=4\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
+          printf 'hw.gpu.enabled=yes\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
+          printf 'hw.gpu.mode=host\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
+          printf 'hw.lcd.width=1080\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
+          printf 'hw.lcd.height=1920\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
+          printf 'hw.lcd.density=420\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
+          printf 'disk.dataPartition.size=6144M\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
+          printf 'disk.cachePartition.size=256M\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
 
-      # - name: 启动 Android Emulator
-      #   run: |
-      #     /usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd test -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim &
+          ANDROID_AVD_HOME=/home/runner/.config/.android/avd /usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd mobsfemu -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          /usr/local/lib/android/sdk/platform-tools/adb shell whoami
 
       - name: 配置 Android Emulator
         run: |
+          sudo apt update -y
+          sudo apt install -y socat
           mkdir -p "$HOME/Android"
           ln -s /usr/local/lib/android/sdk "$HOME/Android/Sdk"
+          ln -s "$HOME/.config/.android/" "$HOME/"
           wget https://github.com/MobSF/Mobile-Security-Framework-MobSF/raw/refs/heads/master/scripts/start_avd.sh
-          # bash start_avd.sh test 5554
+          sed -i.bak '/# Kill any existing emulator processes/,/Starting AVD.*on port/d' start_avd.sh
+          bash start_avd.sh mobsfemu 5554
 
-      # - name: 部署 MobSF
-      #   run: |
-      #     /usr/local/lib/android/sdk/platform-tools/adb devices
-      #     docker pull opensecurity/mobile-security-framework-mobsf:latest
-      #     docker run -itd --rm -p 80:8000 -e "MOBSF_ANALYZER_IDENTIFIER=emulator-5554" opensecurity/mobile-security-framework-mobsf:latest
+      - name: 部署 MobSF
+        run: |
+          /usr/local/lib/android/sdk/platform-tools/adb devices
+          docker pull opensecurity/mobile-security-framework-mobsf:latest
+          docker run -itd --rm -p 80:8000 -e "MOBSF_ANALYZER_IDENTIFIER=host.docker.internal:5556" opensecurity/mobile-security-framework-mobsf:latest
+
 
       - name: 发送 Telegram 通知
         run: |
