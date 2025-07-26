@@ -77,13 +77,10 @@ jobs:
       - name: 启动 Android Emulator
         run: |
           /usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd test -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim &
-          /usr/local/lib/android/sdk/platform-tools/adb devices
 
       - name: 部署 MobSF
         run: |
-          git clone https://github.com/MobSF/Mobile-Security-Framework-MobSF.git
-          cd Mobile-Security-Framework-MobSF
-          scripts/start_avd.sh
+          /usr/local/lib/android/sdk/platform-tools/adb devices
           docker pull opensecurity/mobile-security-framework-mobsf:latest
           docker run -itd --rm -p 80:8000 -e "MOBSF_ANALYZER_IDENTIFIER=emulator-5554" opensecurity/mobile-security-framework-mobsf:latest
 
