@@ -63,7 +63,7 @@ jobs:
       - name: 部署 MobSF
         run: |
           docker pull opensecurity/mobile-security-framework-mobsf:latest
-          docker run -it --rm -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+          docker run -itd --rm -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
 
       - name: 发送 Telegram 通知
         run: |
