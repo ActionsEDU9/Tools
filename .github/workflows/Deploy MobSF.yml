@@ -87,7 +87,7 @@ jobs:
           printf 'disk.cachePartition.size=256M\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
 
           ANDROID_AVD_HOME=/home/runner/.config/.android/avd /usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd mobsfemu -gpu swiftshader_indirect -writable-system -no-snapshot -wipe-data  &
-          /usr/local/lib/android/sdk/platform-tools/adb devices
+          /usr/local/lib/android/sdk/platform-tools/adb devices &
 
       - name: 配置 Android Emulator
         run: |
