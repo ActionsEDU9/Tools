@@ -80,9 +80,7 @@ jobs:
 
       - name: 部署 MobSF
         run: |
-          whoami
           /usr/local/lib/android/sdk/platform-tools/adb devices
-          /usr/local/lib/android/sdk/platform-tools/adb shell whoami
           docker pull opensecurity/mobile-security-framework-mobsf:latest
           docker run -itd --rm -p 80:8000 -e "MOBSF_ANALYZER_IDENTIFIER=emulator-5554" opensecurity/mobile-security-framework-mobsf:latest
 
