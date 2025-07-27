@@ -102,7 +102,7 @@ jobs:
           📮 <b>邮政编码:</b> <code>${{ steps.check_server.outputs.postal }}</code>  
           ⏰ <b>时区:</b> <code>${{ steps.check_server.outputs.timezone }}</code>  
 
-          🔗 <b>VNC 访问地址:</b> <code>http://${{ steps.get_local_ip.outputs.local_ip }}:6080/?autoconnect=true</code>  
+          🔗 <b>ADB 连接地址:</b> <code>adb connect ${{ steps.get_local_ip.outputs.local_ip }}</code>  
           🔗 <b>MobSF 访问地址:</b> <code>http://${{ steps.get_local_ip.outputs.local_ip }}:8000</code>  
           👤 <b>用户名:</b> <code>mobsf</code>  
           🔑 <b>密码:</b> <code>mobsf</code>  
