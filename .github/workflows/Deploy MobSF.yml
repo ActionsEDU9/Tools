@@ -102,7 +102,12 @@ jobs:
         run: |
           /usr/local/lib/android/sdk/platform-tools/adb devices
           docker pull opensecurity/mobile-security-framework-mobsf:latest
-          docker run -itd --rm -p 80:8000 -p 1337:1337 -e "MOBSF_ANALYZER_IDENTIFIER=172.17.0.1:5556" opensecurity/mobile-security-framework-mobsf:latest
+          docker run -itd \
+              -p 80:8000 \
+              -p 1337:1337 \
+              --add-host=host.docker.internal:host-gateway \
+              -e MOBSF_ANALYZER_IDENTIFIER=host.docker.internal:5556 \
+              opensecurity/mobile-security-framework-mobsf:latest
 
       - name: 发送 Telegram 通知
         run: |
