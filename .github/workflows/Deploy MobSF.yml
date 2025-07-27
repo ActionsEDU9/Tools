@@ -60,58 +60,24 @@ jobs:
           echo "提取到本地 IP: ${LOCAL_IP}"
           echo "local_ip=${LOCAL_IP}" >> $GITHUB_OUTPUT
 
-      # - name: 启用 KVM
-      #   run: |
-      #     sudo apt update -y
-      #     sudo apt install -y socat libpulse0
-      #     echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-      #     sudo udevadm control --reload-rules
-      #     sudo udevadm trigger --name-match=kvm
-
-      # - name: 创建 Android Emulator
-      #   run: |
-      #     \yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
-      #     /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --install 'build-tools;35.0.0' platform-tools 'platforms;android-29'
-      #     /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --install emulator --channel=0
-      #     /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --install 'system-images;android-29;default;x86_64' --channel=0
-      #     \echo no | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/avdmanager create avd --force -n mobsfemu --abi 'default/x86_64' --package 'system-images;android-29;default;x86_64'
-      #     printf 'hw.ramSize=8096M\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
-      #     printf 'vm.heapSize=512M\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
-      #     printf 'hw.cpu.ncore=4\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
-      #     printf 'hw.gpu.enabled=yes\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
-      #     printf 'hw.gpu.mode=host\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
-      #     printf 'hw.lcd.width=1080\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
-      #     printf 'hw.lcd.height=1920\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
-      #     printf 'hw.lcd.density=420\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
-      #     printf 'disk.dataPartition.size=6144M\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
-      #     printf 'disk.cachePartition.size=256M\n' >> /home/runner/.config/.android/avd/mobsfemu.avd/config.ini
-
-      #     ANDROID_AVD_HOME=/home/runner/.config/.android/avd /usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd mobsfemu -gpu swiftshader_indirect -writable-system -no-window -no-snapshot -wipe-data  &
-
-      # - name: 配置 Android Emulator
-      #   run: |
-      #     rm -rf "$HOME/.android"
-      #     mkdir -p "$HOME/Android"
-      #     ln -s /usr/local/lib/android/sdk "$HOME/Android/Sdk"
-      #     ln -s "$HOME/.config/.android/" "$HOME/"
-      #     wget https://github.com/MobSF/Mobile-Security-Framework-MobSF/raw/refs/heads/master/scripts/start_avd.sh
-      #     sed -i.bak '/# Kill any existing emulator processes/,/Starting AVD.*on port/d' start_avd.sh
-      #     bash start_avd.sh mobsfemu 5554
-
       - name: 创建 Android Emulator
         run: |
-          docker pull budtmo/docker-android:genymotion
-          docker run -d \
-              -e EMULATOR_DEVICE="Samsung Galaxy S10" \
-              -e WEB_VNC=true \
-              --device /dev/kvm \
-              --network host \
-              --name android-container \
-              budtmo/docker-android:genymotion
+          ## install required kernel modules
+          apt install linux-modules-extra-`uname -r`
+          modprobe binder_linux devices="binder,hwbinder,vndbinder"
+          modprobe ashmem_linux
+
+          ## running redroid
+          docker run -itd --rm --privileged \
+              --pull always \
+              --network="host" \
+              redroid/redroid:12.0.0_64only-latest \
+              androidboot.redroid_width=1080 \
+              androidboot.redroid_height=1920 \
+              androidboot.redroid_dpi=480 \
 
       - name: 部署 MobSF
         run: |
-          docker pull opensecurity/mobile-security-framework-mobsf:latest
           docker run -itd \
               --network="host" \
               --add-host=host.docker.internal:host-gateway \
