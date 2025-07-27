@@ -62,12 +62,8 @@ jobs:
 
       - name: 创建 Android Emulator
         run: |
-          ## install required kernel modules
-          # sudo apt install linux-modules-extra-`uname -r`
-          # sudo modprobe binder_linux devices="binder,hwbinder,vndbinder"
-          # sudo modprobe ashmem_linux
-
-          ## running redroid
+          sudo apt install linux-modules-extra-`uname -r`
+          sudo modprobe binder_linux devices="binder,hwbinder,vndbinder"
           docker run -itd --privileged \
               --pull always \
               --network="host" \
@@ -75,6 +71,7 @@ jobs:
               androidboot.redroid_width=1080 \
               androidboot.redroid_height=1920 \
               androidboot.redroid_dpi=480 \
+              androidboot.use_memfd=true \
 
       - name: 部署 MobSF
         run: |
