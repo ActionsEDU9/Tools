@@ -62,7 +62,7 @@ jobs:
 
       - name: 创建 Android Emulator
         run: |
-          sudo apt install linux-modules-extra-`uname -r`
+          sudo apt install linux-modules-extra-`uname -r` adb
           sudo modprobe binder_linux devices="binder,hwbinder,vndbinder"
           docker run -itd --privileged \
               --pull always \
