@@ -72,6 +72,7 @@ jobs:
               androidboot.redroid_height=1920 \
               androidboot.redroid_dpi=480 \
               androidboot.use_memfd=true \
+              androidboot.redroid_gpu_mode=host \
 
       - name: 部署 MobSF
         run: |
