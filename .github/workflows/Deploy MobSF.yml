@@ -78,6 +78,8 @@ jobs:
 
       - name: 部署 MobSF
         run: |
+          docker pull opensecurity/mobile-security-framework-mobsf:latest
+          echo "正在运行 MobSF 容器..."
           docker run -itd \
               --network="host" \
               --add-host=host.docker.internal:host-gateway \
