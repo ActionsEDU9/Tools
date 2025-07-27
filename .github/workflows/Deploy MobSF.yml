@@ -63,9 +63,9 @@ jobs:
       - name: 创建 Android Emulator
         run: |
           ## install required kernel modules
-          sudo apt install linux-modules-extra-`uname -r`
-          sudo modprobe binder_linux devices="binder,hwbinder,vndbinder"
-          sudo modprobe ashmem_linux
+          # sudo apt install linux-modules-extra-`uname -r`
+          # sudo modprobe binder_linux devices="binder,hwbinder,vndbinder"
+          # sudo modprobe ashmem_linux
 
           ## running redroid
           docker run -itd --privileged \
