@@ -114,7 +114,7 @@ jobs:
           /usr/local/lib/android/sdk/platform-tools/adb devices
           docker pull opensecurity/mobile-security-framework-mobsf:latest
           docker run -itd \
-              --network="host"
+              --network="host" \
               --add-host=host.docker.internal:host-gateway \
               -e MOBSF_ANALYZER_IDENTIFIER=host.docker.internal:5554 \
               opensecurity/mobile-security-framework-mobsf:latest
