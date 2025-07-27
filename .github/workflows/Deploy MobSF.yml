@@ -111,13 +111,14 @@ jobs:
 
       - name: 部署 MobSF
         run: |
-          /usr/local/lib/android/sdk/platform-tools/adb devices
           docker pull opensecurity/mobile-security-framework-mobsf:latest
           docker run -itd \
               --network="host" \
               --add-host=host.docker.internal:host-gateway \
-              -e MOBSF_ANALYZER_IDENTIFIER=host.docker.internal:5554 \
+              -e MOBSF_ANALYZER_IDENTIFIER=localhost \
+              -e EMULATOR_ADDITIONAL_ARGS="-writable-system" \
               opensecurity/mobile-security-framework-mobsf:latest
+          docker exec -it android-container cat device_status
 
       - name: 发送 Telegram 通知
         run: |
@@ -137,7 +138,8 @@ jobs:
           📮 <b>邮政编码:</b> <code>${{ steps.check_server.outputs.postal }}</code>  
           ⏰ <b>时区:</b> <code>${{ steps.check_server.outputs.timezone }}</code>  
 
-          🔗 <b>MobSF 访问地址:</b> <code>http://${{ steps.get_local_ip.outputs.local_ip }}</code>  
+          🔗 <b>VNC 访问地址:</b> <code>http://${{ steps.get_local_ip.outputs.local_ip }}:6080/?autoconnect=true</code>  
+          🔗 <b>MobSF 访问地址:</b> <code>http://${{ steps.get_local_ip.outputs.local_ip }}:8000</code>  
           👤 <b>用户名:</b> <code>mobsf</code>  
           🔑 <b>密码:</b> <code>mobsf</code>  
           
