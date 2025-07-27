@@ -106,7 +106,7 @@ jobs:
               --device /dev/kvm \
               --network host \
               --name android-container \
-              budtmo/docker-android:emulator_12.0
+              budtmo/docker-android:emulator_11.0
 
       - name: 部署 MobSF
         run: |
