@@ -68,7 +68,7 @@ jobs:
           sudo modprobe ashmem_linux
 
           ## running redroid
-          docker run -itd --rm --privileged \
+          docker run -itd --privileged \
               --pull always \
               --network="host" \
               redroid/redroid:12.0.0_64only-latest \
