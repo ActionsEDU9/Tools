@@ -118,7 +118,6 @@ jobs:
               -e MOBSF_ANALYZER_IDENTIFIER=localhost \
               -e EMULATOR_ADDITIONAL_ARGS="-writable-system" \
               opensecurity/mobile-security-framework-mobsf:latest
-          docker exec -itd android-container cat device_status
 
       - name: 发送 Telegram 通知
         run: |
