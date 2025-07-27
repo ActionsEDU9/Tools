@@ -116,7 +116,7 @@ jobs:
               -p 80:8000 \
               -p 1337:1337 \
               --add-host=host.docker.internal:host-gateway \
-              -e MOBSF_ANALYZER_IDENTIFIER=host.docker.internal:5555 \
+              -e MOBSF_ANALYZER_IDENTIFIER=host.docker.internal:5554 \
               opensecurity/mobile-security-framework-mobsf:latest
 
       - name: 发送 Telegram 通知
